@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region = us-west-2
+  region = "us-west-2"
 }
 
 resource "aws_vpc" "myvpc" {
@@ -18,3 +18,18 @@ resource "aws_vpc" "myvpc" {
   }
 }
 
+resource "aws_vpc" "mainvpc" {
+  cidr_block = "192.168.0.0/16"
+  tags = {
+    "Name" = "Main VPC"
+  }
+}
+
+resource "aws_subnet" "sn" {
+    vpc_id = aws_vpc.mainvpc.id
+    cidr_block = "192.168.1.0/24"
+    availability_zone = "us-west-2a"
+    tags = {
+      "Name" = "Web Subnet"
+    }
+}
